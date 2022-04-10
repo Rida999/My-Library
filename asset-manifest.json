@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/MyLibrary/static/css/main.6c9fb3a7.css",
+    "main.js": "/MyLibrary/static/js/main.ef3c78f5.js",
+    "static/media/signup.png": "/MyLibrary/static/media/signup.917bc4ea1380820ff88d.png",
+    "static/media/Empty.svg": "/MyLibrary/static/media/Empty.d2bc575e71777a2380c8dacc440c9654.svg",
+    "static/media/Addingbooks.svg": "/MyLibrary/static/media/Addingbooks.e0d226bd449e0d8bad0cde60b6bc475b.svg",
+    "index.html": "/MyLibrary/index.html",
+    "main.6c9fb3a7.css.map": "/MyLibrary/static/css/main.6c9fb3a7.css.map",
+    "main.ef3c78f5.js.map": "/MyLibrary/static/js/main.ef3c78f5.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6c9fb3a7.css",
+    "static/js/main.ef3c78f5.js"
+  ]
+}
