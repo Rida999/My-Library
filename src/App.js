@@ -187,7 +187,6 @@ useEffect(()=>{
       <Router>
       <div className='min-h-full'>
           <Routes>
-            {/* {isSignedin?( */}
               <Route element={<Layout User={User} Logout={Logout} CartItems={CartItems} Loading={Loading} url={url} db={db} />}>
                 <Route path='/home' element={<Books books={books} CartItems={CartItems} Admin={Admin} db={db} User={User} />} />
                 <Route path='/categories' element={<Categories books={books} />} />
@@ -222,23 +221,16 @@ useEffect(()=>{
                   )}
                 </Route>
                 :""}
-                {/* {["/signin","signup","/"].map((path)=>{
-                  return <Route path={path} key={path} element={<Navigate to="/home"/>} />
-                })} */}
               </Route>
               )
-              {/* :( */}
               <Route element={<Layout2 />}>
                 <Route path="/" element={<Welcome />} />
                 {!isSignedin?
                 <Route path='/signin' element={<Signin adminUsers={adminUsers} Login={Login} error={error} />} />:<Route path='/signin' element={<Navigate to="/home"/>} />}
                 {!isSignedin?
                 <Route path='/signup' element={<Signup SignupInfo={SignupInfo} adminUsers={adminUsers} userImgHandler={userImgHandler}/>} />:<Route path='/signup' element={<Navigate to="/home"/>} />}
-                {/* <Route path='*' element={<Navigate to="/signin" />} /> */}
                 <Route path="/test" element={<Test User={User}/>} />
               </Route>
-              {/* ) */}
-              {/* }  */}
           </Routes>
       </div>
     </Router>
