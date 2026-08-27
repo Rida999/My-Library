@@ -1,49 +1,11 @@
-import React from 'react'
-import "./Bookshelf.css"
+import { Link, useLocation } from 'react-router-dom';
 
-export default function Bookshelf(props) {
-    const {Purchased}=props
-    const colors=["green","blue","umber","springer"];
-    const tilte=[{
-        id:1,
-        tilted:"tilted"
-    },
-    {
-        id:2,
-        tilted:0
-    },{
-        id:3,
-        tilted:0
-    },
-    {
-        id:4,
-        tilted:0
-    },
-    {
-        id:5,
-        tilted:0
-    }
-        ];
-    return (
-    <div className='flex flex-col min-h-full items-center mt-5 mb-24'>
-        <h1 className='t text-6xl mb-8'>See your purchased books.</h1>
-            <div className="bookshelf">
-            {Purchased.length!==0?Purchased.map((book)=>{
-                return(
-                        <div className={`book-${tilte[Math.floor(Math.random()*5)].tilted}`} key={book.createdAt+book.id}>
-                            <div className={`book book-${colors[Math.floor(Math.random()*4)]}`}>
-                                <h2 className='mt-3'>{book.title}</h2>
-                            </div>
-                        </div>
-                    )
-                }):
-                        <div className=''>
-                            <div className='p-16'>
-                                <h1 className='mb-5 text-4xl text-center text-neutral-400'>Nothing have been purchased</h1>
-                            </div>
-                        </div>
-                    }
-            </div>
-    </div>
-  )
+const labels = { placed: 'Placed', confirmed: 'Confirmed', out_for_delivery: 'Out for delivery', delivered: 'Delivered', cancelled: 'Cancelled' };
+
+export default function Bookshelf({ orders = [] }) {
+  const location = useLocation();
+  return <main className="page orders-page"><div className="page-heading"><p className="eyebrow">Your reading journey</p><h1>My orders</h1><p>Track current deliveries and revisit every title you have ordered.</p></div>
+    {location.state?.ordered && <div className="notice-success">Your order is in. We will keep the status updated here.</div>}
+    {!orders.length ? <div className="empty-state"><h2>Your shelf is ready for its first story.</h2><p>Books you order will appear here with their delivery status.</p><Link className="button button-primary" to="/home">Browse books</Link></div> : <div className="order-list">{orders.map((order) => <article className="order-card" key={order.id}><header><div><p className="eyebrow">Order {order.id.slice(0, 8).toUpperCase()}</p><h2>{order.items?.length || 0} {(order.items?.length || 0) === 1 ? 'book' : 'books'}</h2></div><span className={`status status-${order.status}`}>{labels[order.status] || order.status}</span></header><div className="order-books">{order.items?.map((item) => <div key={item.id}><img src={item.url} alt={`Cover of ${item.title}`} /><span>{item.title}</span></div>)}</div><footer><span>{order.createdAt?.toDate?.().toLocaleDateString() || 'Just now'}</span><strong>${Number(order.total).toFixed(2)}</strong></footer></article>)}</div>}
+  </main>;
 }

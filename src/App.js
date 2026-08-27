@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import './App.css';
 import { db } from './DataBase/Data';
 import { useAuth } from './context/AuthContext';
@@ -26,6 +26,7 @@ export default function App() {
   const { profile, isAdmin, isDelivery } = useAuth();
   const [books, setBooks] = useState([]);
   const [users, setUsers] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const user = profile || { id: '', name: '', email: '', role: 'guest' };
   const cartItems = profile?.cart || [];
@@ -40,6 +41,11 @@ export default function App() {
     return onSnapshot(query(collection(db, 'users'), orderBy('name')), (snapshot) => setUsers(snapshot.docs.map((item) => ({ id: item.id, ...item.data() }))));
   }, [isAdmin, isDelivery]);
 
+  useEffect(() => {
+    if (!profile?.id) { setOrders([]); return undefined; }
+    return onSnapshot(query(collection(db, 'orders'), where('userId', '==', profile.id)), (snapshot) => setOrders(snapshot.docs.map((item) => ({ id: item.id, ...item.data() })).sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0))));
+  }, [profile?.id]);
+
   const shared = useMemo(() => ({ books, CartItems: cartItems, Admin: isAdmin, db, User: user }), [books, cartItems, isAdmin, user]);
   return <BrowserRouter><Routes>
     <Route element={<Layout loading={loading} />}>
@@ -47,7 +53,7 @@ export default function App() {
       <Route path="/categories" element={<Categories books={books} />} />
       {categories.map((category) => <Route key={category} path={`/categories/${category}`} element={<Books {...shared} books={books.filter((book) => book.category === category)} />} />)}
       <Route path="/about" element={<About />} />
-      <Route element={<ProtectedRoute />}><Route path="/purchased" element={<Bookshelf Purchased={profile?.purchased || []} />} /><Route path="/checkout" element={cartItems.length ? <CheckOut CartItems={cartItems} User={user} db={db} /> : <Navigate to="/home" replace />} /></Route>
+      <Route element={<ProtectedRoute />}><Route path="/purchased" element={<Bookshelf orders={orders} />} /><Route path="/checkout" element={cartItems.length ? <CheckOut CartItems={cartItems} User={user} /> : <Navigate to="/home" replace />} /></Route>
       <Route element={<ProtectedRoute roles={['admin']} />}><Route path="/addbooks" element={<BookAdding colRefBooks={collection(db, 'books')} />} /></Route>
       <Route element={<ProtectedRoute roles={['admin', 'delivery']} />}><Route path="/users" element={<Users adminUsers={users} />} />{users.map((item) => <Route key={item.id} path={`/users/${item.id}`} element={<Checklist user={item} db={db} Delivery={isDelivery} />} />)}</Route>
       <Route path="*" element={<No />} />
