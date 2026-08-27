@@ -21,6 +21,7 @@ export function AuthProvider({ children }) {
       setLoading(false);
       return;
     }
+    setLoading(true);
     unsubscribeProfile = onSnapshot(doc(db, 'users', nextUser.uid), (snapshot) => {
       setProfile(snapshot.exists() ? { id: nextUser.uid, ...emptyProfile, ...snapshot.data() } : { id: nextUser.uid, ...emptyProfile, name: nextUser.displayName || '', email: nextUser.email || '' });
       setLoading(false);

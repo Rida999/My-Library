@@ -2,11 +2,12 @@ import { Link } from 'react-router-dom';
 import { MinusIcon, PlusIcon, ShoppingBagIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../../../context/AuthContext';
 import { saveCart } from '../../../services/library';
+import { calculateSubtotal } from '../../../utils/catalog';
 
 export default function Cart({ onClose }) {
   const { profile } = useAuth();
   const items = profile?.cart || [];
-  const subtotal = items.reduce((sum, item) => sum + Number(item.price) * Number(item.qty), 0);
+  const subtotal = calculateSubtotal(items);
   const changeQuantity = (id, delta) => saveCart(profile.id, items.map((item) => item.id === id ? { ...item, qty: Math.max(1, Math.min(9, Number(item.qty) + delta)) } : item));
   const remove = (id) => saveCart(profile.id, items.filter((item) => item.id !== id));
 
