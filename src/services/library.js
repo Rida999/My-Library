@@ -1,4 +1,4 @@
-import { arrayRemove, arrayUnion, collection, doc, runTransaction, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, runTransaction, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../DataBase/Data';
 
 export function addBookToCart(userId, book) {
@@ -51,4 +51,17 @@ export async function placeOrder(user) {
 
 export function updateOrderStatus(orderId, status) {
   return updateDoc(doc(db, 'orders', orderId), { status, updatedAt: serverTimestamp() });
+}
+
+export function saveBook(book) {
+  const payload = { ...book, price: Number(book.price), stock: Number(book.stock), updatedAt: serverTimestamp() };
+  if (book.id) {
+    const { id, ...changes } = payload;
+    return updateDoc(doc(db, 'books', id), changes);
+  }
+  return addDoc(collection(db, 'books'), { ...payload, createdAt: serverTimestamp() });
+}
+
+export function removeBook(bookId) {
+  return deleteDoc(doc(db, 'books', bookId));
 }
