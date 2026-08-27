@@ -1,37 +1,11 @@
-import { useState } from 'react';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../context/AuthContext';
+import {useState} from 'react';
+import {Link,Navigate,useLocation,useNavigate} from 'react-router-dom';
+import {LockClosedIcon} from '@heroicons/react/24/solid';
+import {useAuth} from '../../../context/AuthContext';
 
-export default function Signin() {
-  const { firebaseUser, login } = useAuth();
-  const [form, setForm] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
-  if (firebaseUser) return <Navigate to="/home" replace />;
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setError('');
-    setSubmitting(true);
-    try {
-      await login(form);
-      navigate(location.state?.from?.pathname || '/home', { replace: true });
-    } catch {
-      setError('We could not sign you in. Check your email and password.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  return <main className="auth-page"><form className="auth-panel" onSubmit={handleSubmit}>
-    <Link className="wordmark" to="/">MY LIBRARY</Link>
-    <div><p className="eyebrow">Welcome back</p><h1>Sign in to your shelf</h1><p className="muted">Continue browsing, ordering, and tracking your books.</p></div>
-    <label>Email<input type="email" autoComplete="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></label>
-    <label>Password<input type="password" autoComplete="current-password" required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} /></label>
-    {error && <p className="form-error" role="alert">{error}</p>}
-    <button className="button button-primary" disabled={submitting} type="submit">{submitting ? 'Signing in...' : 'Sign in'}</button>
-    <p className="auth-switch">New here? <Link to="/signup">Create an account</Link></p>
-  </form></main>;
+export default function Signin(){
+ const {firebaseUser,login}=useAuth(); const [form,setForm]=useState({email:'',password:''}); const [error,setError]=useState(''); const [submitting,setSubmitting]=useState(false); const location=useLocation(); const navigate=useNavigate();
+ if(firebaseUser)return <Navigate to="/home" replace/>;
+ const submit=async(e)=>{e.preventDefault();setSubmitting(true);setError('');try{await login(form);navigate(location.state?.from?.pathname||'/home',{replace:true});}catch{setError('Wrong email or password.');}finally{setSubmitting(false)}};
+ return <div className="flex min-h-screen items-center justify-center py-12 px-4 bg-gray-50"><div className="max-w-md w-full space-y-8"><div><div className="mx-auto h-12 w-12 rounded bg-indigo-600 text-white flex items-center justify-center font-bold">ML</div><h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h1></div><form className="mt-8 space-y-6" onSubmit={submit}><div className="space-y-4"><input className="appearance-none relative block w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500" type="email" required placeholder="Email address" value={form.email} onChange={(e)=>setForm({...form,email:e.target.value})}/><input className="appearance-none relative block w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500" type="password" required placeholder="Password" value={form.password} onChange={(e)=>setForm({...form,password:e.target.value})}/>{error&&<p className="text-sm text-red-600">{error}</p>}</div><div className="flex justify-end"><Link to="/signup" className="text-sm font-medium text-cyan-600 hover:text-cyan-500">Sign Up</Link></div><button disabled={submitting} className="group relative w-full flex justify-center py-3 px-4 rounded-md text-white bg-cyan-900 hover:bg-cyan-700 disabled:opacity-60"><LockClosedIcon className="w-5 absolute left-3"/>{submitting?'Signing in...':'Sign in'}</button></form></div></div>;
 }

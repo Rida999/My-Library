@@ -1,3 +1,37 @@
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
-export default function No() { return <main className="page"><div className="empty-state not-found"><p className="eyebrow">404</p><h1>This page slipped between the shelves.</h1><p>The link may be old, or the page may have moved.</p><Link className="button button-primary" to="/home">Return to the books</Link></div></main>; }
+export default function No() {
+
+    return (
+        <div>
+            <div className="lg:px-24 lg:py-24 md:py-20 md:px-44 px-4 py-24 items-center flex justify-center flex-col-reverse lg:flex-row md:gap-28 gap-16">
+                <div className="xl:pt-24 w-full xl:w-1/2 relative pb-12 lg:pb-0">
+                    <div className="relative">
+                        <div className="absolute">
+                            <div>
+                                <h1 className="my-2 text-gray-800 font-bold text-2xl">
+                                    Looks like you've found the
+                                    doorway to the great nothing
+                                </h1>
+                                <p className="my-2 text-gray-800">Sorry about that! Please visit our hompage to get where you need to go.</p>
+                                <Link to="/home">
+                                    <button className="sm:w-full lg:w-auto my-2 border rounded md py-4 px-8 text-center bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-opacity-50">Take me there!</button>
+                                </Link>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="https://i.ibb.co/G9DC8S0/404-2.png" alt="" />
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <img src="https://i.ibb.co/ck1SGFJ/Group.png" alt="" />
+                </div>
+            </div>
+        </div>
+
+    );
+}
+
+

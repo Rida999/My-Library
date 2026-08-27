@@ -1,21 +1,2 @@
-import React,{useState} from "react";
-import { SearchPanel } from "react-search-panel";
-
-const Search = (props) => {
-  const {HandleChange,Input}=props;
-  const [selectedChoices, setSelectedChoices] = useState("");
-  return (
-      <SearchPanel
-        choices={selectedChoices}
-        onChange={HandleChange}
-        onSelectionChange={setSelectedChoices}
-        placeholder="Search"
-        selectedChoices={selectedChoices}
-        shadow
-        value={Input}
-        width={450}
-        small
-      />
-  );
-}
-export default Search;
+import {MagnifyingGlassIcon} from '@heroicons/react/24/outline';
+export default function Search({HandleChange,Input}){return <label className="relative w-full max-w-md"><span className="sr-only">Search books</span><MagnifyingGlassIcon className="absolute left-3 top-3 w-5 text-gray-400"/><input type="search" value={Input} onChange={HandleChange} placeholder="Search" className="w-full py-3 pl-10 pr-4 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-indigo-500"/></label>}

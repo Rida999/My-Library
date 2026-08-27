@@ -1,5 +1,1 @@
-import { Link } from 'react-router-dom';
-
-export default function Footer() {
-  return <footer className="site-footer"><div><Link className="wordmark wordmark-light" to="/home">MY LIBRARY</Link><p>A quieter place to find your next story.</p></div><nav aria-label="Footer navigation"><Link to="/home">Books</Link><Link to="/categories">Categories</Link><Link to="/about">About</Link></nav><span>© {new Date().getFullYear()} My Library</span></footer>;
-}
+export default function Footer(){return <footer className="bg-gray-800 text-gray-300 shadow-2xl"><div className="container flex flex-col p-6 mx-auto md:p-8 lg:flex-row text-lg"><p className="self-center py-4 text-center lg:flex-1 lg:text-left">Don't find a book? Contact Us.</p><div className="flex flex-col justify-center"><div className="flex justify-center gap-6 text-sm"><a className="text-blue-400" href="https://twitter.com/Ridaajam999">Twitter</a><a className="text-blue-500" href="https://www.facebook.com/rida.ossmanajam/">Facebook</a><a className="text-fuchsia-400" href="https://www.instagram.com/r.i.d_aj/">Instagram</a></div><hr className="mt-2 border-gray-600"/><p className="text-sm text-center mt-2">Copyright 2022 - RidaAjam</p></div></div></footer>}
