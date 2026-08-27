@@ -11,6 +11,11 @@ export default defineConfig({
       return transformWithEsbuild(code, id, { loader: 'jsx', jsx: 'automatic' });
     },
   }, react()],
+  optimizeDeps: {
+    esbuildOptions: {
+      loader: { '.js': 'jsx' },
+    },
+  },
   test: {
     environment: 'jsdom',
     setupFiles: './src/test/setup.js',
