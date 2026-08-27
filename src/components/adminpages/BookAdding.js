@@ -1,95 +1,21 @@
-import { addDoc } from 'firebase/firestore';
-import React,{useState} from 'react';
-import Addingbooks from "../../img/Addingbooks.svg";
+import { useState } from 'react';
+import { PencilSquareIcon, PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { removeBook, saveBook } from '../../services/library';
 
-const BookAdding = (props) => {
-    const {colRefBooks}=props;
-    const [details, setdetails] = useState({title:"",author:"",price:"",description:"",category:"",language:"",url:""});
-    const submitHandler=(e)=>{
-        addDoc(colRefBooks,details)
-        .then(()=>{
-            setdetails({title:"",author:"",price:"",description:"",category:"",language:"",url:""});
-        })
-    }
-    return (
-        <div className='w-full h-full flex justify-center items-center '>
-            <div className='flex w-11/12 md:w-1/2 lg:w-1/3 min-h-full my-8 bg-white flex-col justify-center items-center border-slate-600 border-2 border-opacity-20 rounded-md shadow-2xl'>
-                <div>
-                    <img src={Addingbooks} alt="" />
-                </div>
-                <div className='p-8 pt-0 flex-1 flex flex-col items-center'>
-                    <p className='text-xl my-5'>Add Book Information</p>
-                    <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6 items-center min-w-full">
-                        <label htmlFor="Title" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
-                            Title:
-                        </label>
-                        <input
-                        onChange={e=>setdetails({...details,title:e.target.value})} value={details.title}
-                        type="text" id="Title" name="Title" required className="w-80 border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm rounded bg-transparent text-sm focus:outline-none focus:border-cyan-600 placeholder-gray-500 text-gray-500 dark:text-gray-400" />
-                    </div>
-                    <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6 items-center min-w-full">
-                        <label htmlFor="Author" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
-                            Author:
-                        </label>
-                        <input
-                        onChange={e=>setdetails({...details,author:e.target.value})} value={details.author}
-                        type="text" id="Author" name="Author" required className="w-80 border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm rounded bg-transparent text-sm focus:outline-none focus:border-cyan-600 placeholder-gray-500 text-gray-500 dark:text-gray-400" />
-                    </div>
-                    <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6 items-center min-w-full">
-                        <label htmlFor="Price" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
-                            Price:
-                        </label>
-                        <input
-                        onChange={e=>setdetails({...details,price:e.target.value})} value={details.price}
-                        type="text" id="Price" name="Price" required className="w-80 border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm rounded bg-transparent text-sm focus:outline-none focus:border-cyan-600 placeholder-gray-500 text-gray-500 dark:text-gray-400" />
-                    </div>
-                    <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6 items-center min-w-full">
-                        <label htmlFor="Description" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
-                            Description:
-                        </label>
-                        <textarea
-                        onChange={e=>setdetails({...details,description:e.target.value})} value={details.description}
-                        id="Description" name="Description" required className="w-80 border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm rounded bg-transparent text-sm focus:outline-none focus:border-cyan-600 placeholder-gray-500 text-gray-500 dark:text-gray-400" />
-                    </div>
-                    <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6 items-center min-w-full">
-                        <label htmlFor="Category" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
-                            Category:
-                        </label>
-                        <select id="Category" name="Categorie" required onClick={e=>setdetails({...details,category:e.target.value})} className="w-80 border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm rounded bg-transparent text-sm focus:outline-none focus:border-cyan-600 placeholder-gray-500 text-gray-500 dark:text-gray-400">
-                            <option value="Horror" >Horror</option>
-                            <option value="Detective-and-Mystery" >Detective-and-Mystery</option>
-                            <option value="Romance" >Romance</option>
-                            <option value="Kid-Zone" >Kid-Zone</option>
-                            <option value="Historical" >Historical</option>
-                            <option value="Action-and-Adventure" >Action-and-Adventure</option>
-                            <option value="Comic-Book" >Comic-Book</option>
-                        </select>
-                    </div>
-                    <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6 items-center min-w-full">
-                        <label htmlFor="Language" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
-                            Language:
-                        </label>
-                        <select id="Language" name="Language" required onClick={e=>{setdetails({...details,language:e.target.value})}} className="w-80 border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm rounded bg-transparent text-sm focus:outline-none focus:border-cyan-600 placeholder-gray-500 text-gray-500 dark:text-gray-400">
-                            <option value="Arabic">Arabic</option>
-                            <option value="English" selected>English</option>
-                            <option value="French">French</option>
-                        </select>
-                    </div>
-                    <div className="xl:w-1/4 lg:w-1/2 md:w-1/2 flex flex-col mb-6 items-center min-w-full">
-                        <label htmlFor="url" className="pb-2 text-sm font-bold text-gray-800 dark:text-gray-100">
-                            Img url:
-                        </label>
-                        <input
-                        onChange={e=>setdetails({...details,url:e.target.value})} value={details.url}
-                        type="text" id="url" name="url" required className="w-80 border border-gray-300 dark:border-gray-700 pl-3 py-3 shadow-sm rounded bg-transparent text-sm focus:outline-none focus:border-cyan-600 placeholder-gray-500 text-gray-500 dark:text-gray-400" />
-                    </div>
-                    <button onClick={submitHandler} className="bg-cyan-700 focus:outline-none transition duration-150 ease-in-out hover:bg-cyan-600 rounded text-white px-20 py-3 text-lg" type="submit">
-                        Submit
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
+const emptyBook = { title: '', author: '', description: '', category: 'Horror', language: 'English', format: 'Paperback', price: '', stock: '', url: '' };
+const categories = ['Horror', 'Detective-and-Mystery', 'Romance', 'Kid-Zone', 'Historical', 'Comic-Book', 'Action-and-Adventure'];
+
+export default function BookAdding({ books }) {
+  const [form, setForm] = useState(emptyBook);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const update = (field) => (event) => setForm({ ...form, [field]: event.target.value });
+  const submit = async (event) => {
+    event.preventDefault(); setSaving(true); setError('');
+    try { await saveBook(form); setForm(emptyBook); } catch { setError('The book could not be saved. Check the fields and try again.'); } finally { setSaving(false); }
+  };
+  const edit = (book) => { setForm({ ...emptyBook, ...book }); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  const remove = async (book) => { if (window.confirm(`Delete “${book.title}”? This cannot be undone.`)) await removeBook(book.id); };
+
+  return <main className="page admin-page"><div className="page-heading"><p className="eyebrow">Catalog workspace</p><h1>{form.id ? 'Edit this book' : 'Add a book'}</h1><p>Keep titles, cover art, prices, and availability accurate from one place.</p></div><form className="book-form" onSubmit={submit}><div className="form-grid"><label>Title<input required value={form.title} onChange={update('title')} /></label><label>Author<input required value={form.author} onChange={update('author')} /></label><label>Category<select value={form.category} onChange={update('category')}>{categories.map((item) => <option key={item}>{item}</option>)}</select></label><label>Language<select value={form.language} onChange={update('language')}><option>English</option><option>Arabic</option><option>French</option></select></label><label>Price<input required min="0" step="0.01" type="number" value={form.price} onChange={update('price')} /></label><label>Stock<input required min="0" type="number" value={form.stock} onChange={update('stock')} /></label><label className="span-two">Cover image URL<input required type="url" value={form.url} onChange={update('url')} /></label><label className="span-two">Description<textarea rows="4" required value={form.description} onChange={update('description')} /></label></div>{error && <p className="form-error">{error}</p>}<div className="form-actions"><button className="button button-primary" disabled={saving} type="submit"><PlusIcon />{saving ? 'Saving...' : form.id ? 'Save changes' : 'Add book'}</button>{form.id && <button className="button button-secondary" type="button" onClick={() => setForm(emptyBook)}><XMarkIcon />Cancel editing</button>}</div></form><section className="catalog-admin"><div><h2>Catalog</h2><span>{books.length} titles</span></div><div className="catalog-admin-list">{books.map((book) => <article key={book.id}><img src={book.url} alt="" /><div><h3>{book.title}</h3><p>{book.author}</p><span>{Number(book.stock) || 0} in stock · ${Number(book.price).toFixed(2)}</span></div><button className="icon-button" onClick={() => edit(book)} aria-label={`Edit ${book.title}`}><PencilSquareIcon /></button><button className="icon-button danger" onClick={() => remove(book)} aria-label={`Delete ${book.title}`}><TrashIcon /></button></article>)}</div></section></main>;
 }
-
-export default BookAdding;
