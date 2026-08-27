@@ -4,13 +4,13 @@ import { Bars3Icon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outli
 import { useAuth } from '../../context/AuthContext';
 import Cart from './cart/Cart';
 
-const links = [{ label: 'Browse', to: '/home' }, { label: 'Categories', to: '/categories' }, { label: 'My shelf', to: '/purchased' }, { label: 'About', to: '/about' }];
+const links = [{ label: 'Browse', to: '/home' }, { label: 'Categories', to: '/categories' }, { label: 'Favorites', to: '/favorites' }, { label: 'My orders', to: '/purchased' }, { label: 'About', to: '/about' }];
 
 export default function Navbar() {
   const { firebaseUser, profile, logout, isAdmin, isDelivery } = useAuth();
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const nav = [...links, ...((isAdmin || isDelivery) ? [{ label: 'Orders', to: '/users' }] : []), ...(isAdmin ? [{ label: 'Add book', to: '/addbooks' }] : [])];
+  const nav = [...links, ...((isAdmin || isDelivery) ? [{ label: 'Orders', to: '/orders' }] : []), ...(isAdmin ? [{ label: 'Catalog', to: '/addbooks' }] : [])];
   return <header className="site-header"><nav className="nav-shell" aria-label="Main navigation">
     <Link className="wordmark" to="/home">MY LIBRARY</Link>
     <button className="icon-button menu-button" onClick={() => setOpen(!open)} aria-label="Toggle navigation">{open ? <XMarkIcon /> : <Bars3Icon />}</button>
