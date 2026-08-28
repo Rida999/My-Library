@@ -1,1 +1,39 @@
-export default function Swipers({books}){const covers=books.slice(0,3);return <div className="relative h-72 flex items-center justify-center bg-gray-100 rounded-xl overflow-hidden shadow-lg">{covers.length?covers.map((book,index)=><img key={book.id} src={book.url} alt="" className="absolute h-60 w-40 object-cover rounded-lg shadow-xl" style={{transform:`translateX(${(index-(covers.length-1)/2)*45}px) rotate(${(index-(covers.length-1)/2)*5}deg)`,zIndex:index}}/>):<span className="text-gray-400">No books yet</span>}</div>}
+import React from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-cards";
+
+import "./Styles.css";
+
+// import required modules
+import { EffectCards,Autoplay } from "swiper";
+
+export default function Swipers(props) {
+  const {books}=props;
+  return (
+    <>
+      <Swiper
+        effect={"cards"}
+        grabCursor={true}
+        loop={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        modules={[EffectCards,Autoplay]}
+        className="mySwiper"
+      >
+        {books.map((book)=>(
+                          <SwiperSlide key={book.url}>
+                            <img src={book.url} alt="" />
+                          </SwiperSlide>
+                          ))}
+      </Swiper>
+    </>
+  );
+}
+
+

@@ -1,13 +1,118 @@
-import { Link } from 'react-router-dom';
-import { MinusIcon, PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { useAuth } from '../../../context/AuthContext';
+import React, { useContext } from "react";
+import { ShowContext } from "../Navbar";
+import Swal from 'sweetalert2';
+import { Link } from "react-router-dom";
 import { saveCart } from '../../../services/library';
-import { calculateSubtotal } from '../../../utils/catalog';
 
-export default function Cart({onClose}) {
-  const {profile}=useAuth();
-  const items=profile?.cart||[];
-  const change=(id,delta)=>saveCart(profile.id,items.map((item)=>item.id===id?{...item,qty:Math.max(1,Math.min(9,Number(item.qty)+delta))}:item));
-  const remove=(id)=>saveCart(profile.id,items.filter((item)=>item.id!==id));
-  return <div className="fixed inset-0 z-50 bg-black bg-opacity-80" onMouseDown={onClose}><aside className="absolute right-0 h-full w-full md:w-2/3 lg:w-1/2 bg-white flex flex-col" onMouseDown={(e)=>e.stopPropagation()}><header className="flex items-center justify-between px-6 py-5 border-b"><h2 className="text-3xl font-black text-gray-800">Bag</h2><button onClick={onClose} aria-label="Close cart"><XMarkIcon className="w-7"/></button></header><div className="flex-1 overflow-y-auto px-6">{items.length===0?<div className="h-full flex items-center justify-center text-2xl text-gray-400">Your bag is empty</div>:items.map((item)=><article key={item.id} className="grid grid-cols-[80px_1fr_auto] gap-4 py-6 border-b"><img className="w-20 h-28 object-cover" src={item.url} alt=""/><div><h3 className="font-bold text-gray-800">{item.title}</h3><p className="text-sm text-gray-500">{item.author}</p><div className="inline-flex items-center border mt-4"><button className="p-2" onClick={()=>change(item.id,-1)}><MinusIcon className="w-4"/></button><span className="px-2">{item.qty}</span><button className="p-2" onClick={()=>change(item.id,1)}><PlusIcon className="w-4"/></button></div></div><div className="flex flex-col justify-between items-end"><strong>{Number(item.price)*Number(item.qty)}$</strong><button onClick={()=>remove(item.id)} className="text-red-500" aria-label="Remove"><TrashIcon className="w-5"/></button></div></article>)}</div>{items.length>0&&<footer className="bg-gray-100 p-6"><div className="flex justify-between text-2xl font-bold mb-5"><span>Subtotal</span><span>{calculateSubtotal(items)}$</span></div><Link onClick={onClose} to="/checkout" className="block w-full text-center py-4 bg-gray-800 text-white text-xl">Checkout</Link></footer>}</aside></div>;
+function Cart(props) {
+    const {CartItems,db,User}=props
+    const {Show,setShow} = useContext(ShowContext);
+    const SubTotal=CartItems.reduce((SubTotal,CartItem)=>SubTotal+Number(Number(CartItem.price)*Number(CartItem.qty)),0);
+    const Shipping=2;
+    const Total=SubTotal+Shipping;
+    const onQtyChange=(e)=>{
+        saveCart(User.id,CartItems.map((item)=>item.id===e.target.id?{...item,qty:e.target.value}:item));
+        };
+    const HandleDeleteCard=(e)=>{
+        const itemId=e.currentTarget.id;
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              );
+          saveCart(User.id,CartItems.filter((CartItem)=>CartItem.id!==itemId))
+        };
+    })}
+    return (
+        <>
+            <div>
+                {Show && (
+                    <div className="w-full h-full bg-black bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden z-50 fixed sticky-0" id="chec-div">
+                        <div className={`${CartItems.length==0?'w-1/2':'w-5/6'} absolute z-10 right-0 h-full  overflow-x-hidden transform translate-x-0 transition-all ease-in-out duration-700" id="checkout`}>
+                            <div className="flex md:flex-row overflow-y-auto flex-col justify-end items-end" id="cart">
+                                <div className="lg:w-full w-full md:pl-10 pl-4 pr-10 md:pr-4 md:py-12 py-8 flex flex-col bg-white overflow-x-hidden h-screen" id="scroll">
+                                    <div className="flex items-center text-gray-500 hover:text-gray-600 cursor-pointer" onClick={(e) => {setShow(!Show)}}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-chevron-left" width={16} height={16} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <polyline points="15 6 9 12 15 18" />
+                                        </svg>
+                                        <p className="text-sm pl-2 leading-none">Back</p>
+                                    </div>
+                                    <p className="text-5xl font-black leading-10 text-gray-800 pt-3">Bag</p>
+                                    {/* Cart content */}
+                                    {(CartItems.length==0)?<div className="flex items-center justify-center flex-1"><img src="https://professionalscareer.com/assets/images/emptycart.png" /></div>:(
+                                        CartItems.map((CartItem)=>(
+                                        <div className="md:flex items-center mt-14 pt-8 border-t border-gray-200" key={CartItem.price}>
+                                        <div className="w-1/3">
+                                            <img src={CartItem.url} alt="" />
+                                        </div>
+                                        <div className="md:pl-3 md:w-3/4">
+                                            {/* <p className="text-xs leading-3 text-gray-800 md:pt-0 pt-4">RF293</p> */}
+                                            <div className="flex items-center justify-between w-full pt-1">
+                                                <p className="text-base font-black leading-none text-gray-800">{CartItem.title}</p>
+                                                <select className="py-2 px-1 border border-gray-200 mr-6 focus:outline-none" id={CartItem.id} value={CartItem.qty} onChange={onQtyChange}>
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>
+                                                </select>
+                                            </div>
+                                            <p className="text-xs leading-3 text-gray-600 pt-2">{CartItem.author}</p>
+                                            {/* <p className="text-xs leading-3 text-gray-600 py-4">Color: Black</p>
+                                            <p className="w-96 text-xs leading-3 text-gray-600">Composition: 100% calf leather</p> */}
+                                            <div className="flex items-center justify-between pt-5 pr-6">
+                                                <div className="flex itemms-center">
+                                                    {/* <p className="text-xs leading-3 underline text-gray-800 cursor-pointer">Add to favorites</p> */}
+                                                    <p className="text-md leading-3 underline text-red-500 cursor-pointer" id={CartItem.id} onClick={HandleDeleteCard}>Remove</p>
+                                                </div>
+                                                <p className="text-base font-black leading-none text-gray-800">{Number(CartItem.price)*Number(CartItem.qty)}$</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    )))}
+                                    {/* end Cart Content */}
+                                </div>
+                                {CartItems.length==0?"":(
+                                <div className="xl:w-1/2 md:w-2/5 w-full bg-gray-100 h-full">
+                                    <div className="flex flex-col md:h-screen px-14 py-10 justify-between">
+                                        <div>
+                                            <p className="text-4xl font-black leading-9 text-gray-800">Summary</p>
+                                            <div className="flex items-center justify-between pt-16">
+                                                <p className="text-base leading-none text-gray-800">Subtotal</p>
+                                                <p className="text-base leading-none text-gray-800">{SubTotal}$</p>
+                                            </div>
+                                            <div className="flex items-center justify-between pt-5">
+                                                <p className="text-base leading-none text-gray-800">Shipping</p>
+                                                <p className="text-base leading-none text-gray-800">{Shipping}$</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <div className="flex items-center pb-4 justify-between lg:pt-5 pt-10">
+                                                <p className="text-2xl leading-normal text-gray-800">Total</p>
+                                                <p className="text-2xl font-bold leading-normal text-right text-gray-800">{Total}$</p>
+                                            </div>
+                                            <Link to="/checkout" onClick={() => setShow(!Show)} className="text-center text-xl leading-none w-full py-4 bg-gray-800 border-gray-800 border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-white">
+                                                Checkout
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>)}
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </>
+    );
 }
+
+export default Cart;
