@@ -1,17 +1,16 @@
 import React from 'react';
 import { Button } from '@mui/material';
+import { doc,updateDoc,arrayUnion, serverTimestamp } from 'firebase/firestore';
 import Swal from 'sweetalert2';
-import { placeOrder } from '../../../services/library';
 
 const SectionInfo = (props) => {
     const {User,CartItems,db}=props;
     // sound
     const hooray=new Audio("https://cdn.videvo.net/videvo_files/audio/premium/audio0070/watermarked/CrowdCheering%206082_96_preview.mp3");
     //  
-    const HandleAddtoPending=async()=>{
+    const docRefUser=doc(db,"users",User.id);
+    const HandleAddtoPending=(e)=>{
         hooray.play();
-        try {
-          await placeOrder(User);
         Swal.fire({
             title: 'congratulations!',
             text: "We'll reach you as soon as possible.",
@@ -19,10 +18,20 @@ const SectionInfo = (props) => {
             imageWidth: 400,
             imageHeight: 300,
             imageAlt: 'hooray',
-          });
-        } catch (error) {
-          Swal.fire('Order failed',error.message,'error');
-        }
+          }).then(()=>{
+            CartItems.map ((CartItem)=>{
+                const d=new Date();
+                const date=`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
+                updateDoc(docRefUser,{
+                    pending:arrayUnion({...CartItem,createdAt:date}),
+                    cart:[],
+                });
+                // updateDoc(docRefUser,{
+                    
+                // });
+            }
+        );
+          })
     }
     return (
         <div className="flex flex-col mb-24">

@@ -1,11 +1,13 @@
+import "./DataBase/Data"
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { AuthProvider } from './context/AuthContext';
 
-createRoot(document.getElementById('root')).render(
+ReactDOM.render(
   <React.StrictMode>
-    <AuthProvider><App /></AuthProvider>
-  </React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
 );
+

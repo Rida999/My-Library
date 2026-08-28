@@ -1,11 +1,12 @@
 import React from 'react';
 import Empty from "../../img/Empty.svg";
+import { doc,updateDoc,arrayUnion, arrayRemove } from 'firebase/firestore';
 import Swal from 'sweetalert2';
-import { updateOrderStatus } from '../../services/library';
 
 const Checklist = (props) => {
     const {user,db,Delivery}=props;
     const Total=user.pending.reduce((Total,Item)=>{return Total+=(Number(Item.price)*Number(Item.qty))},0);
+    const docRefUser=doc(db,"users",user.id);
     const HandleAddtoPurchased=(e)=>{
         Swal.fire({
             title: 'Delivered.',
@@ -13,7 +14,10 @@ const Checklist = (props) => {
           }).then(()=>{
             user.pending.map ((pendingItem)=>{
                 if(pendingItem.title+pendingItem.createdAt===e.target.id){
-                updateOrderStatus(pendingItem.orderId,'delivered');
+                updateDoc(docRefUser,{
+                    purchased:arrayUnion(pendingItem),
+                    pending:arrayRemove(pendingItem)
+                });
                 }
                 
             }

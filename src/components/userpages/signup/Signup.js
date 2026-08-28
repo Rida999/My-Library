@@ -4,6 +4,7 @@ import PasswordStrengthBar from 'react-password-strength-bar';
 import Swal from 'sweetalert2';
 import signup from '../../../img/signup.png'
 import { useForm } from "react-hook-form";
+import bcrypt from "bcryptjs/dist/bcrypt";
 
 const Signup = (props) => {
     const {SignupInfo,adminUsers,userImgHandler}=props;
@@ -20,7 +21,7 @@ const Signup = (props) => {
             setError("email",{types:{type1:"already taken"}});
         }
         else{
-            SignupInfo(details);
+            SignupInfo({...details,password:bcrypt.hashSync(details.password, 8)});
         }
     }
     const PhotoHandler=async()=>{

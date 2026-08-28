@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { ShowContext } from "../Navbar";
 import Swal from 'sweetalert2';
+import { doc,updateDoc,arrayUnion, arrayRemove } from 'firebase/firestore';
 import { Link } from "react-router-dom";
-import { saveCart } from '../../../services/library';
 
 function Cart(props) {
     const {CartItems,db,User}=props
@@ -10,11 +10,23 @@ function Cart(props) {
     const SubTotal=CartItems.reduce((SubTotal,CartItem)=>SubTotal+Number(Number(CartItem.price)*Number(CartItem.qty)),0);
     const Shipping=2;
     const Total=SubTotal+Shipping;
+    const docRefUser=doc(db,"users",User.id);
     const onQtyChange=(e)=>{
-        saveCart(User.id,CartItems.map((item)=>item.id===e.target.id?{...item,qty:e.target.value}:item));
+        CartItems.map ((item)=>{
+        if(item.id===e.target.id){
+            if(item.qty!==e.target.value){
+                updateDoc(docRefUser,{
+                    cart:arrayRemove(item)
+                })
+            };
+            updateDoc(docRefUser,{
+            cart:arrayUnion({...item,qty:e.target.value}),
+          });
+        }
+    }
+      );
         };
     const HandleDeleteCard=(e)=>{
-        const itemId=e.currentTarget.id;
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -30,7 +42,10 @@ function Cart(props) {
                 'Your file has been deleted.',
                 'success'
               );
-          saveCart(User.id,CartItems.filter((CartItem)=>CartItem.id!==itemId))
+          updateDoc(docRefUser,{
+            cart:CartItems.filter((CartItem)=>{
+                return CartItem.id!==e.target.id
+            })})
         };
     })}
     return (

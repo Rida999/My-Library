@@ -13,9 +13,11 @@ const Cards = (props) => {
         return book.title.toLowerCase().includes(Input.toLowerCase())
                 ||book.author.toLowerCase().includes(Input.toLowerCase())
     });
-    const [active, setActive] = useState({});
+    const [active, setActive] = useState(false);
 
-    const FinalBooks=(Checked.length!==0)?FilteredBooks.filter((book)=>Checked.indexOf(book.language)!==-1):FilteredBooks;
+    const FinalBooks=(Checked.length!==0)?books.filter((book)=>{
+        return Checked.indexOf(book.language)!==-1
+        }):FilteredBooks;
     // end filtered 
     // adding items to cart
     const HandleAddtoCart=(e)=>{
@@ -66,7 +68,7 @@ const Cards = (props) => {
                         <div key={book.id}>
                             <div className='relative'>
                                 <img className="w-full h-72 rounded-t-xl block" src={book.url} alt="games" />
-                                <Heart isActive={!!active[book.id]} onClick={() => setActive({...active,[book.id]:!active[book.id]})} className="w-8 absolute bottom-2 right-2 hover:scale-110" style = {{fill: active[book.id] ? "red" : "white", stroke: active[book.id] ? "red":"white", filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 1))"}}/>
+                                <Heart isActive={active} onClick={() => setActive(!active)} className="w-8 absolute bottom-2 right-2 hover:scale-110" style = {{fill: active ? "red" : "white", stroke: active ? "red":"white", filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 1))"}}/>
                             </div>
                             <div className="py-2 px-4 w-full flex justify-between bg-indigo-700">
                                 <p className="text-sm text-white font-semibold tracking-wide overflow-y-auto">{book.author}</p>
