@@ -31,12 +31,12 @@ export default function App() {
   const CategoriesPages=["Horror","Detective-and-Mystery","Romance","Kid-Zone","Historical","Comic-Book","Action-and-Adventure",];
   // users
   const [url, seturl] = useState("https://manager.almadarisp.com/user/img/user.png");
-  const [User, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [User, setUser] = useState(JSON.parse(localStorage.getItem("user")) || {cart:[],pending:[],purchased:[],name:"",email:"",id:"guest",img:false});
   const [userImg, setuserImg] = useState("");
   const [adminUsers, setadminUsers] = useState([]);
-  const [isSignedin, setisSignedin] = useState(JSON.parse(localStorage.getItem("isSignedin")));
-  const [Admin, setAdmin] = useState(JSON.parse(localStorage.getItem("admin")));
-  const [Delivery, setDelivery] = useState(JSON.parse(localStorage.getItem("delivery")));
+  const [isSignedin, setisSignedin] = useState(JSON.parse(localStorage.getItem("isSignedin")) || false);
+  const [Admin, setAdmin] = useState(JSON.parse(localStorage.getItem("admin")) || false);
+  const [Delivery, setDelivery] = useState(JSON.parse(localStorage.getItem("delivery")) || false);
   const [Loading, setLoading] = useState(false);
   const [error, seterror] = useState("");
   const [CartItems, setCartItems] = useState(JSON.parse(localStorage.getItem("cart"))?JSON.parse(localStorage.getItem("cart")):[]);
@@ -136,13 +136,19 @@ export default function App() {
   }, []);
 // useEffect for database Cart
 useEffect(()=>{
-  if(isSignedin){
+  if(isSignedin && User.id && User.id!=="guest"){
   const docRefUser=doc(db,"users",User.id);
-  onSnapshot(docRefUser,(doc)=>{
-    setCartItems(doc.data().cart);
-    setPurchased(doc.data().purchased);
-    setPending(doc.data().pending);
+  const unsubscribe=onSnapshot(docRefUser,(snapshot)=>{
+    if(snapshot.exists()){
+      const data=snapshot.data();
+      setCartItems(data.cart || []);
+      setPurchased(data.purchased || []);
+      setPending(data.pending || []);
+    }else{
+      setisSignedin(false);
+    }
   });
+  return unsubscribe;
 };
   seterror("");
 },[User])
@@ -184,7 +190,7 @@ useEffect(()=>{
     localStorage.setItem("delivery",JSON.stringify(Delivery))
   },[Delivery])
   return (
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
       <div className='min-h-full'>
           <Routes>
               <Route element={<Layout User={User} Logout={Logout} CartItems={CartItems} Loading={Loading} url={url} db={db} />}>
