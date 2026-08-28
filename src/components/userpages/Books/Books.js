@@ -1,14 +1,44 @@
-import { useMemo, useState } from 'react';
-import { AdjustmentsHorizontalIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import React,{useState} from 'react';
 import Cards from './Cards';
-import { filterAndSortBooks } from '../../../utils/catalog';
+import Filter from './Filter';
+import Search from './Search';
+import Posters from './Posters/Posters';
+import TopAndBottom from './TopAndBottom';
 
-export default function Books({ books, title = 'Find your next book', description = 'Search the collection, compare editions, and choose a story worth keeping.' }) {
-  const [search, setSearch] = useState('');
-  const [language, setLanguage] = useState('all');
-  const [sort, setSort] = useState('title');
-  const languages = useMemo(() => [...new Set(books.map((book) => book.language).filter(Boolean))].sort(), [books]);
-  const results = useMemo(() => filterAndSortBooks(books, { search, language, sort }), [books, search, language, sort]);
 
-  return <main className="page catalog-page"><div className="page-heading"><p className="eyebrow">Curated collection</p><h1>{title}</h1><p>{description}</p></div><section className="catalog-toolbar" aria-label="Book filters"><label className="search-field"><MagnifyingGlassIcon /><span className="sr-only">Search books</span><input type="search" placeholder="Search title or author" value={search} onChange={(event) => setSearch(event.target.value)} /></label><div className="select-field"><AdjustmentsHorizontalIcon /><select aria-label="Filter by language" value={language} onChange={(event) => setLanguage(event.target.value)}><option value="all">All languages</option>{languages.map((item) => <option key={item}>{item}</option>)}</select></div><select aria-label="Sort books" value={sort} onChange={(event) => setSort(event.target.value)}><option value="title">Title A-Z</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select><span className="result-count">{results.length} {results.length === 1 ? 'book' : 'books'}</span></section><Cards books={results} /></main>;
+const Books = (props) => {
+    const {books,CartItems,Admin,db,User}=props;
+    const [Input, setInput] =useState("");
+    const HandleChange=(e)=>{
+        setInput(e.target.value);
+    }
+    // checked
+    const [Checked, setChecked] = useState([]);
+
+    const handleToggle=(e)=>{
+        const currentIndex=Checked.indexOf(e.target.value);
+        const newChecked=[...Checked];
+
+        if(currentIndex===-1){
+            newChecked.push(e.target.value)
+        }
+        else{
+            newChecked.splice(currentIndex, 1)
+        }
+        setChecked(newChecked);
+    }
+    // end checked
+    return (
+        <div className='flex flex-col m-8'>
+            <div className='flex justify-center'>
+                <Search HandleChange={HandleChange} Input={Input} />
+            </div>
+            <Posters />
+            <Filter handleToggle={handleToggle} />
+            <Cards books={books} CartItems={CartItems} Input={Input} Checked={Checked} Admin={Admin} db={db} User={User} />
+            <TopAndBottom />
+        </div>
+    );
 }
+
+export default Books;

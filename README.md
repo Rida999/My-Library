@@ -1,51 +1,70 @@
-# My Library
+# Getting Started with Create React App
 
-A responsive React and Firebase bookshop with reader, administrator, and delivery workflows.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Features
+## Available Scripts
 
-- Search, language filters, sorting, categories, book details, and favorites
-- Firebase Authentication with role-aware routes
-- Live Firestore cart and atomic order placement using current catalog prices
-- Customer order history and delivery status tracking
-- Staff order workspace with searchable status management
-- Admin catalog management for titles, prices, stock, covers, and descriptions
-- Firestore and Storage rules enforcing ownership and staff permissions
+In the project directory, you can run:
 
-## Local setup
+### `npm start`
 
-1. Install dependencies with `npm install`.
-2. Copy `.env.example` to `.env.local` and fill in the Firebase web app values. The checked-in development defaults still point to the original Firebase project.
-3. Enable **Email/Password** under Firebase Console > Authentication > Sign-in method.
-4. Deploy the rules with `firebase deploy --only firestore:rules,storage`.
-5. Start the app with `npm run dev` and open the printed local URL.
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-Run `npm test` for the unit tests and `npm run build` for a production build.
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-## Roles
+### `npm test`
 
-New accounts are always created with `role: "user"`. Promote staff only from a trusted environment such as the Firebase Console or Admin SDK by changing the matching `users/{uid}` profile:
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-- `admin`: catalog and order management
-- `delivery`: order management only
-- `user`: shopping, favorites, checkout, and personal orders
+### `npm run build`
 
-The client cannot assign or change its own role under the included Firestore rules.
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-## Migrating legacy accounts
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-The original app stored bcrypt password hashes in Firestore and authenticated by downloading all users into the browser. Those hashes cannot be imported into Firebase Authentication from client code.
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-For every existing user:
+### `npm run eject`
 
-1. Create a Firebase Authentication account using the Admin SDK, a password-reset enrollment flow, or the Firebase Console.
-2. Move the profile to `users/{firebaseAuthUid}` so its document ID matches the Authentication UID.
-3. Keep the contact fields, and initialize `cart: []`, `favorites: []`, and `role: "user"` as needed.
-4. Assign `admin` or `delivery` roles only from a trusted environment.
-5. Remove the old `password`, `pending`, and `purchased` fields after validating the migration.
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-Legacy pending/purchased arrays should be converted into documents in `orders`. Each order contains `userId`, customer/address snapshots, `items`, totals, `status`, `createdAt`, and `updatedAt`.
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-## Deployment
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-`npm run build` writes the site to `dist`. The included `firebase.json` configures SPA rewrites for Firebase Hosting. GitHub Pages remains available through `npm run deploy`; Vite automatically uses `/My-Library/` as its Actions base path.
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

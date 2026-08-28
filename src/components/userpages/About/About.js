@@ -1,3 +1,56 @@
-export default function About() {
-  return <main className="page about-page"><div className="page-heading"><p className="eyebrow">About My Library</p><h1>Books make a place feel lived in.</h1><p>My Library was built around a simple idea: discovering and ordering a book should feel considered, calm, and personal.</p></div><div className="about-layout"><div className="about-image"><img src="https://images.unsplash.com/photo-1526243741027-444d633d7365?auto=format&fit=crop&w=1200&q=85" alt="Open books arranged on a table" /></div><section><h2>A collection with range</h2><p>From mysteries and historical fiction to comics and books for younger readers, the shelves are organized for exploration without making you work for it.</p><h2>Built around readers</h2><p>Save favorites, keep a clear shopping bag, and see where every order stands. The useful details stay visible so the books can remain the focus.</p><dl><div><dt>7</dt><dd>distinct genres</dd></div><div><dt>3</dt><dd>languages represented</dd></div><div><dt>1</dt><dd>shelf that is entirely yours</dd></div></dl></section></div></main>;
-}
+import React from "react";
+
+const About = () => {
+    const producers=[
+        {
+            url:"https://i.ibb.co/FYTKDG6/Rectangle-118-2.png",
+            name:"Alexa"
+        },
+        {
+            url:"https://i.ibb.co/fGmxhVy/Rectangle-119.png",
+            name:"Olivia"
+        },
+        {
+            url:"https://i.ibb.co/Pc6XVVC/Rectangle-120.png",
+            name:"Liam"
+        },
+        {
+            url:"https://i.ibb.co/7nSJPXQ/Rectangle-121.png",
+            name:"Elijah"
+        },
+    ]
+    return (
+        <div className="2xl:container 2xl:mx-auto lg:py-16 lg:px-20 md:py-12 md:px-6 py-9 px-4">
+            <div className="flex flex-col lg:flex-row justify-between gap-8">
+                <div className="w-full lg:w-5/12 flex flex-col justify-center">
+                    <h1 className="text-3xl lg:text-4xl font-bold leading-9 text-gray-800 pb-4">About Us</h1>
+                    <p className="font-normal text-base leading-6 text-gray-600 ">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.In the first place we have granted to God, and by this our present charter confirmed for us and our heirs forever that the English Church shall be free, and shall have her rights entire, and her liberties inviolate; and we will that it be thus observed; which is apparent from</p>
+                </div>
+                <div className="w-full lg:w-8/12 ">
+                    <img className="w-full h-full" src="https://i.ibb.co/FhgPJt8/Rectangle-116.png" alt="A group of People" />
+                </div>
+            </div>
+
+            <div className="flex lg:flex-row flex-col justify-between gap-8 pt-12">
+                <div className="w-full lg:w-5/12 flex flex-col justify-center">
+                    <h1 className="text-3xl lg:text-4xl font-bold leading-9 text-gray-800 pb-4">Our Story</h1>
+                    <p className="font-normal text-base leading-6 text-gray-600 ">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.In the first place we have granted to God, and by this our present charter confirmed for us and our heirs forever that the English Church shall be free, and shall have her rights entire, and her liberties inviolate; and we will that it be thus observed; which is apparent from</p>
+                </div>
+                <div className="w-full lg:w-8/12 lg:pt-8">
+                    <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 lg:gap-4 shadow-lg rounded-md">
+                        {producers.map((producer)=>
+                            (
+                            <div className="p-4 pb-6 flex justify-center flex-col items-center" key={producer.name}>
+                                <img className="block" src={producer.url} alt="Alexa featured Img" />
+                                <p className="font-medium text-xl leading-5 text-gray-800 mt-4">{producer.name}</p>
+                            </div>
+                            )
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default About;

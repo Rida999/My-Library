@@ -1,38 +1,64 @@
 {
   "name": "books",
-  "homepage": "https://rida999.github.io/My-Library",
+  "homepage": "http://rida999.github.io/MyLibrary",
   "version": "0.1.0",
   "private": false,
   "dependencies": {
-    "@heroicons/react": "^2.2.0",
-    "firebase": "^12.2.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-hook-form": "^7.62.0",
-    "react-router-dom": "^6.30.1",
-    "sweetalert2": "^11.22.4"
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@headlessui/react": "^1.4.3",
+    "@heroicons/react": "^1.0.5",
+    "@mui/material": "^5.5.0",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
+    "bcryptjs": "^2.4.3",
+    "firebase": "^9.6.8",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-heart": "^1.0.6",
+    "react-hook-form": "^7.27.1",
+    "react-icons": "^4.3.1",
+    "react-password-strength-bar": "^0.4.0",
+    "react-router-dom": "^6.2.1",
+    "react-scripts": "5.0.0",
+    "react-search-panel": "^1.0.9",
+    "react-spinners": "^0.11.0",
+    "sweetalert2": "^11.4.4",
+    "sweetalert2-react-content": "^4.2.0",
+    "swiper": "^8.0.6",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
-    "start": "vite",
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "predeploy":"npm run build",
+    "deploy":"gh-pages -d build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.8.0",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^14.6.1",
-    "@vitejs/plugin-react": "^5.0.2",
-    "autoprefixer": "^10.4.21",
+    "autoprefixer": "^10.4.2",
     "gh-pages": "^3.2.3",
-    "jsdom": "^26.1.0",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17",
-    "vite": "^7.1.3",
-    "vitest": "^3.2.4"
+    "postcss": "^8.4.6",
+    "tailwindcss": "^3.0.22"
   }
 }
