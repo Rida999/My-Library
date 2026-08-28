@@ -5,4 +5,11 @@
   width: 90%;
   max-height: 80%;
   border-radius: 7px;
+  touch-action: pan-y;
+}
+
+.Posters img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
