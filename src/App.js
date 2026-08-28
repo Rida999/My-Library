@@ -18,6 +18,7 @@ import Test from './Test';
 import {storage_bucket} from "./DataBase/Data";
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import CheckOut from './components/userpages/Checkout/CheckOut';
+import BookPreview from './components/userpages/Books/BookPreview';
 import Checklist from './components/adminpages/Checklist';
 import bcrypt from 'bcryptjs/dist/bcrypt';
 
@@ -195,6 +196,7 @@ useEffect(()=>{
           <Routes>
               <Route element={<Layout User={User} Logout={Logout} CartItems={CartItems} Loading={Loading} url={url} db={db} />}>
                 <Route path='/home' element={<Books books={books} CartItems={CartItems} Admin={Admin} db={db} User={User} />} />
+                <Route path='/books/:bookId' element={<BookPreview books={books} />} />
                 <Route path='/categories' element={<Categories books={books} />} />
                 <Route path='/purchased' element={<Bookshelf Purchased={Purchased} />} />
                 <Route path='/about' element={<About />} />

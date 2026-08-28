@@ -16,6 +16,13 @@ export default function App() {
     <>
       <Swiper
         spaceBetween={30}
+        allowTouchMove={true}
+        simulateTouch={true}
+        grabCursor={true}
+        touchRatio={1}
+        resistanceRatio={0.85}
+        observer={true}
+        observeParents={true}
         pagination={{
           clickable: true,
         }}
@@ -27,8 +34,8 @@ export default function App() {
         modules={[Pagination,EffectCards,Autoplay]}
         className="Posters shadow-xl"
       >
-        <SwiperSlide><img src="https://static01.nyt.com/images/2021/03/26/books/26athome-newsletter-1/00APRIL-BOOKS-COMBO-mobileMasterAt3x.jpg" alt="" /></SwiperSlide>
-        <SwiperSlide><img src="https://content.fortune.com/wp-content/uploads/2021/08/Fall-2021-books.jpg" alt="" /></SwiperSlide>
+        <SwiperSlide><img draggable="false" src="https://static01.nyt.com/images/2021/03/26/books/26athome-newsletter-1/00APRIL-BOOKS-COMBO-mobileMasterAt3x.jpg" alt="" /></SwiperSlide>
+        <SwiperSlide><img draggable="false" src="https://content.fortune.com/wp-content/uploads/2021/08/Fall-2021-books.jpg" alt="" /></SwiperSlide>
       </Swiper>
     </>
   );

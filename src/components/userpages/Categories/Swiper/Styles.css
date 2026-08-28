@@ -12,3 +12,13 @@
   font-weight: bold;
   color: #000;
 }
+
+.mySwiper {
+  touch-action: pan-y;
+}
+
+.mySwiper img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}

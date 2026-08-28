@@ -18,6 +18,12 @@ export default function Swipers(props) {
       <Swiper
         effect={"cards"}
         grabCursor={true}
+        allowTouchMove={true}
+        simulateTouch={true}
+        touchRatio={1}
+        resistanceRatio={0.85}
+        observer={true}
+        observeParents={true}
         loop={true}
         autoplay={{
           delay: 2500,
@@ -28,12 +34,11 @@ export default function Swipers(props) {
       >
         {books.map((book)=>(
                           <SwiperSlide key={book.url}>
-                            <img src={book.url} alt="" />
+                            <img draggable="false" src={book.url} alt={book.title} />
                           </SwiperSlide>
                           ))}
       </Swiper>
     </>
   );
 }
-
 

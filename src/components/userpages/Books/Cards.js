@@ -3,6 +3,7 @@ import { doc,deleteDoc, updateDoc,arrayUnion } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import Heart from 'react-heart';
+import { InformationCircleIcon } from '@heroicons/react/outline';
 
 const Cards = (props) => {
     const {Checked,books,CartItems,Input,Admin,db,User}=props
@@ -66,9 +67,15 @@ const Cards = (props) => {
                 {
                     FinalBooks.map((book)=>(
                         <div key={book.id}>
-                            <div className='relative'>
+                            <div className='relative group'>
                                 <img className="w-full h-72 rounded-t-xl block" src={book.url} alt="games" />
-                                <Heart isActive={active} onClick={() => setActive(!active)} className="w-8 absolute bottom-2 right-2 hover:scale-110" style = {{fill: active ? "red" : "white", stroke: active ? "red":"white", filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 1))"}}/>
+                                <div className="absolute inset-0 flex items-center justify-center rounded-t-xl bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+                                    <Link to={`/books/${book.id}`} className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white text-indigo-700 font-semibold shadow-xl hover:bg-indigo-50 focus:outline-none focus:ring-4 focus:ring-indigo-300">
+                                        <InformationCircleIcon className="w-5 h-5" />
+                                        Info
+                                    </Link>
+                                </div>
+                                <Heart isActive={active} onClick={() => setActive(!active)} className="w-8 absolute z-10 bottom-2 right-2 hover:scale-110" style = {{fill: active ? "red" : "white", stroke: active ? "red":"white", filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 1))"}}/>
                             </div>
                             <div className="py-2 px-4 w-full flex justify-between bg-indigo-700">
                                 <p className="text-sm text-white font-semibold tracking-wide overflow-y-auto">{book.author}</p>
