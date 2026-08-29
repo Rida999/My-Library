@@ -22,7 +22,6 @@ import BookPreview from './components/userpages/Books/BookPreview';
 import Checklist from './components/adminpages/Checklist';
 import bcrypt from 'bcryptjs/dist/bcrypt';
 
-//test
 export default function App() {
   const db=getFirestore();
   const colRefBooks=collection(db,"books");
